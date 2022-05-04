@@ -77,7 +77,6 @@ async def bp(ctx):
 ########################################
 ####     Команды администратора     ####
 ########################################
-
 @bot.command
 @commands.has_permissions(administrator = True)
 
