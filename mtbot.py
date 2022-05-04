@@ -31,43 +31,43 @@ async def on_ready():
 	await bot.change_presence(status = discord.Status.online, activity = discord.Game('Напиши /help'))
 
 
-@bot.command                               #Царан (Команда help должна показать пользователю, какие команды он может использовать)
+@bot.command()                               #Царан (Команда help должна показать пользователю, какие команды он может использовать)
 
 async def help(ctx):
 	await ctx.send()
 
 
-@bot.command                               #--
+@bot.command()                               #--
 
 async def top(ctx, bw : str, diopozon = 10):
 	await ctx.send()
 
 
-@bot.command                               #Даня (команда должна выдать статистику игрока, который был указан, либо же игрока, который отправил эту команду)
+@bot.command()                               #Даня (команда должна выдать статистику игрока, который был указан, либо же игрока, который отправил эту команду)
  
 async def stats(ctx, player_name : discord.Member):
 	await ctx.send()
 
 
-@bot.command                               #Влад (команда должна синхронизировать пользователя в discord'е с его аккаунтом в minecraft'e (по факту, нужно добавить профиль дс-а в бд
+@bot.command()                               #Влад (команда должна синхронизировать пользователя в discord'е с его аккаунтом в minecraft'e (по факту, нужно добавить профиль дс-а в бд
                                            #      с последующей верефикацией))
 async def reg(ctx, nickname : str):
 	await ctx.send()
 
 
-@bot.command                               #Влад (изменение привязанного никнейма к профилю discord'а)
+@bot.command()                               #Влад (изменение привязанного никнейма к профилю discord'а)
 
 async def rereg(ctx, old_nickname : str, new_nickname : str):
 	await ctx.send()
 
 
-@bot.command                               #Даня (выводить лучшие предложения из магазина и давать ссылку на него)
+@bot.command()                               #Даня (выводить лучшие предложения из магазина и давать ссылку на него)
 
 async def shop(ctx):
 	await ctx.send()
 
 
-@bot.command                               #--
+@bot.command()                               #--
 
 async def bp(ctx):
 	await ctx.send()
@@ -77,28 +77,28 @@ async def bp(ctx):
 ########################################
 ####     Команды администратора     ####
 ########################################
-@bot.command
+@bot.command()
 @commands.has_permissions(administrator = True)
 
 async def ban(ctx):
 	await ctx.send()
 
 
-@bot.command
+@bot.command()
 @commands.has_permissions(administrator = True)
 
 async def mute(ctx):
 	await ctx.send()
 
 
-@bot.command
+@bot.command()
 @commands.has_permissions(administrator = True)
 
 async def tempban(ctx):
 	await ctx.send()
 
 
-@bot.command
+@bot.command()
 @commands.has_permissions(administrator = True)
 
 async def voiceban(ctx):
