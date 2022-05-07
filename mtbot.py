@@ -8,6 +8,7 @@
 ##########################################################################
 
 
+from cmath import inf
 import discord
 import time
 import datetime
@@ -23,6 +24,13 @@ bot = commands.Bot(command_prefix = '.')
 buttons = ButtonsClient(bot)
 slash = SlashCommand(bot, sync_commands = True)
 
+db = mc.connect(
+    host = "mysql3.joinserver.xyz",
+    user = "u77034_L1ZfOAh3wl",
+    passwd = "hETSKgyQjb=aYMwmHst+=L0q",
+    database = "s77034_BadWars"
+)
+
 @bot.event
 
 async def on_ready():
@@ -33,7 +41,7 @@ async def on_ready():
 
 @bot.command()                               #Царан (Команда help должна показать пользователю, какие команды он может использовать)
 
-async def help(ctx):
+async def helpme(ctx):
 	await ctx.send()
 
 
@@ -43,14 +51,58 @@ async def top(ctx, bw : str, diopozon = 10):
 	await ctx.send()
 
 
-@bot.command()                               #Даня (команда должна выдать статистику игрока, который был указан, либо же игрока, который отправил эту команду)
+
+@bot.command()                               #--
  
 async def stats(ctx, player_name : discord.Member):
-	await ctx.send()
+	user_id = '\\' + str(player_name.mention)
+	user_discord_name = str(player_name).replace('@', '')[:-5]
+	cursor = db.cursor()
+	information = []
+	uuid = []
+	emb = discord.Embed(title = '', description = '', colour = discord.Color.blue())
+	kd = float 
+	winrate : float
 
+	try:
+		cursor.execute("SELECT uuid FROM bw_stats_players WHERE discord_id = '" + user_id + "'")
+		for x in cursor:
+			uuid += x
+
+		cursor.execute("SELECT * FROM bw_stats_players WHERE uuid = '" + uuid[0] + "'")
+		for x in cursor:
+			information += x
+		cursor.execute("SELECT * FROM bw_rang_texted WHERE uuid = '" + uuid[0] + "'")
+		for x in cursor:
+			information += x
+
+		information.remove(information[6])
+		information.remove(information[10])
+		information.remove(information[10])
+
+		if information[6] == 0 or information[6] == 1:
+			kd = information[0]
+		else:
+			kd = information[0]/information[6]
+		
+		winrate = (information[1]/(information[1] + information[3])) * 100
+
+		emb = discord.Embed(title = 'Информация о пользователе ' + user_discord_name, description = 'Профиль игрока в режиме Bed Wars', colour = discord.Color.blue())
+		emb.set_author(name = information[4] + ': ' + information[9], icon_url = player_name.avatar_url)
+		emb.set_thumbnail(url = player_name.avatar_url)
+		emb.add_field(name = 'Ранг: ' + information[9], value = '*Счёт в сезоне: ' + str(information[2]) + '*')
+		emb.add_field(name = 'К/Д: ' + str(kd), value = '*Убийств: ' + str(information[0]) + '*\n*Смертей: ' + str(information[6]) + '*')
+		# if information[2] > 10000:                                                                                                                       Алгаритм на будущее. Скорее всего, возьму за основу
+		# 	emb.add_field(name = 'Текущее место среди лиги лучших: ' + information[x], value = '*Разрыв: ' + information[x] + ' очков*')                   алгоритм из команды выше.
+		emb.add_field(name = 'Винрейт: ' + str(winrate) + '%', value = '*Побед: ' + str(information[1]) + '*')
+		await ctx.send(embed = emb)
+	except Exception as e:
+		print('Ошибка при использовании команды .stats: ' + str(e) + '\ninfo: ' + str(information) + '\nuuid: ' + str(uuid))
+		await ctx.send('**Ошибка:** пользователь не найден. Возможно, ты допустил ошибку в никнейме, или же такого игрока нет на сервере.')
+    
 
 @bot.command()                               #Влад (команда должна синхронизировать пользователя в discord'е с его аккаунтом в minecraft'e (по факту, нужно добавить профиль дс-а в бд
-                                           #      с последующей верефикацией))
+                                             #     с последующей верефикацией))
 async def reg(ctx, nickname : str):
 	await ctx.send()
 
@@ -67,7 +119,7 @@ async def shop(ctx):
 	await ctx.send()
 
 
-@bot.command()                               #--
+@bot.command()                               #Даня
 
 async def bp(ctx):
 	await ctx.send()
