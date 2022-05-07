@@ -51,6 +51,7 @@ async def top(ctx, bw : str, diopozon = 10):
 	await ctx.send()
 
 
+
 @bot.command()                               #--
  
 async def stats(ctx, player_name : discord.Member):
@@ -98,7 +99,7 @@ async def stats(ctx, player_name : discord.Member):
 	except Exception as e:
 		print('Ошибка при использовании команды .stats: ' + str(e) + '\ninfo: ' + str(information) + '\nuuid: ' + str(uuid))
 		await ctx.send('**Ошибка:** пользователь не найден. Возможно, ты допустил ошибку в никнейме, или же такого игрока нет на сервере.')
-
+    
 
 @bot.command()                               #Влад (команда должна синхронизировать пользователя в discord'е с его аккаунтом в minecraft'e (по факту, нужно добавить профиль дс-а в бд
                                              #     с последующей верефикацией))
