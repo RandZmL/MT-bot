@@ -42,7 +42,16 @@ async def on_ready():
 @bot.command()                               #Царан (Команда help должна показать пользователю, какие команды он может использовать)
 
 async def helpme(ctx):
-	await ctx.send()
+	emb = discord.Embed(title = 'Команды бота', colour = discord.Color.green())
+	emb.set_author(name = 'Даун', icon_url = 'https://cdn.discordapp.com/attachments/571193028190928903/972322466405953536/-----687128.gif')
+	emb.add_field(name = '.helpme', value = 'Команда для вызова этого сообщения', inline = False)
+	emb.add_field(name = '.stats [Ник игрока]', value = 'Показывает статистику введёного игрока', inline = False)
+	emb.add_field(name = '.top [Номер места]', value = 'Показывает топ игроков, начиная с указанного места (Например: .top15 покажет вам 10 лучших игроков, начиная с 15-го места ', inline = False)
+	emb.add_field(name = '.reg [Ник игрока в майнкрафте]', value = 'Связывает ваш аккаунт дискорда с вашим аккаунтом в майнкрафте', inline = False)
+	emb.add_field(name = '.rereg [Старый ник игрока в майнкрафте] [Новый ник игрока в майнкрафте]', value = 'Связывает ваш аккаунт дискорда с вашим новым аккаунтом в майкнрафте', inline = False)
+	emb.add_field(name = '.shop', value = 'Показывает самые интересные товары в магазине', inline = False)
+	emb.add_field(name = '.bp', value = 'Показывает информацию о вашем боевом пропуске', inline = False)
+	await ctx.send(embed = emb)
 
 
 @bot.command()                               #--
