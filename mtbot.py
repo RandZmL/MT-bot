@@ -25,10 +25,10 @@ buttons = ButtonsClient(bot)
 slash = SlashCommand(bot, sync_commands = True)
 
 db = mc.connect(
-    host = "mysql3.joinserver.xyz",
-    user = "u77034_L1ZfOAh3wl",
-    passwd = "hETSKgyQjb=aYMwmHst+=L0q",
-    database = "s77034_BadWars"
+    host = "host",
+    user = "user",
+    passwd = "password",
+    database = "database"
 )
 
 @bot.event
