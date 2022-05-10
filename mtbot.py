@@ -31,6 +31,8 @@ db = mc.connect(
     database = "s77034_BadWars"
 )
 
+global emb
+
 @bot.event
 
 async def on_ready():
@@ -47,8 +49,71 @@ async def helpme(ctx):
 
 @bot.command()                               #--
 
-async def top(ctx, bw : str, diopozon = 10):
-	await ctx.send()
+async def top(ctx, top_range = 1):
+	score = []
+	nickname = []
+	rang = []
+	i = 0
+
+	cursor = db.cursor()
+
+	cursor.execute("SELECT score FROM bw_stats_players")
+	for x in cursor:
+		score += x
+
+	cursor.execute("SELECT name FROM bw_stats_players")
+	for x in cursor:
+		nickname += x
+
+	cursor.execute("SELECT rang FROM bw_rang_texted")
+	for x in cursor:
+		rang += x
+
+	try:
+		for iInter in range(len(score)):
+			swapped = False
+			for jInter in range(top_range - 1 - (top_range - 1), len(score) - iInter - 1):
+				if score[jInter] > score[jInter + 1]:
+					score[jInter], score[jInter + 1] = score[jInter + 1], score[jInter]
+					nickname[jInter], nickname[jInter + 1] = nickname[jInter + 1], nickname[jInter]
+					rang[jInter], rang[jInter + 1] = rang[jInter + 1], rang[jInter]
+					swapped = True
+					i += 1
+					if swapped == False:
+						break
+		
+		
+		score.reverse()
+		print(score)
+		nickname.reverse()
+		print(nickname)
+		rang.reverse()
+		print(rang)
+
+		if len(score) <= 10:
+			if top_range != 1:
+				for i in range(top_range - 1):
+					score.remove(score[0])
+					print(score)
+					nickname.remove(nickname[0])
+					print(nickname)
+					rang.remove(rang[0])
+					print(rang)
+
+
+		i = 0
+		emb = discord.Embed(title = 'Топ игроков в Bed War', description = '[С ' + str(top_range) + ' по ' + str(len(score)) + ' места]', colour = discord.Color.gold())
+		emb.set_author(name = 'Информация от вашего верного слуги!', icon_url = 'https://cdn.discordapp.com/attachments/571193028190928903/972322466405953536/-----687128.gif')
+		emb.add_field(name = f'🏆 {nickname[0]} [Топ-{top_range}]', value = f'Ранг: {rang[0]}\nСчёт: {score[0]}', inline = False)
+
+		for i in range(len(score) - 1):
+			emb.add_field(name = f'{top_range + i + 1}-e место', value = f'**{nickname[i+1]}**\n*Счёт: {score[i+1]}*', inline = False)
+
+		await ctx.send(embed = emb)
+		print('Всё сработало:\n')
+	except Exception as e:
+		print(f'Ошибка выполнения запроса пользователя: {e}\nДанные, полученные ботом: \nnickname: {nickname}\nscore: {score}\nrang: {rang}')
+		await ctx.send('Увы, но что-то пошло не так при вашем запросе. Возможно, вы неправильно ввели комманду. Пример правильно введёной команды: ``.top bw 3``, где 3 - место, с которого вы хотите вывести топ игроков.')
 
 
 @bot.command()                               #--
@@ -60,7 +125,7 @@ async def stats(ctx, player_name : discord.Member):
 	information = []
 	uuid = []
 	emb = discord.Embed(title = '', description = '', colour = discord.Color.blue())
-	kd = float 
+	kd : float 
 	winrate : float
 
 	try:
@@ -76,8 +141,6 @@ async def stats(ctx, player_name : discord.Member):
 			information += x
 
 		information.remove(information[6])
-		information.remove(information[10])
-		information.remove(information[10])
 
 		if information[6] == 0 or information[6] == 1:
 			kd = information[0]
@@ -96,7 +159,7 @@ async def stats(ctx, player_name : discord.Member):
 		emb.add_field(name = 'Винрейт: ' + str(winrate) + '%', value = '*Побед: ' + str(information[1]) + '*')
 		await ctx.send(embed = emb)
 	except Exception as e:
-		print('Ошибка при использовании команды .stats: ' + str(e) + '\ninfo: ' + str(information) + '\nuuid: ' + str(uuid))
+		print(f'Ошибка при использовании команды .stats: {e}\ninfo: ' + str(information) + '\nuuid: ' + str(uuid))
 		await ctx.send('**Ошибка:** пользователь не найден. Возможно, ты допустил ошибку в никнейме, или же такого игрока нет на сервере.')
 
 
@@ -155,6 +218,15 @@ async def tempban(ctx):
 async def voiceban(ctx):
 	await ctx.send()
 
-with open('token.txt', 'r') as f:
-    token = f.readline()
-bot.run(token)
+# with open('token.txt', 'r') as f:
+#     token = f.readline()
+bot.run('OTQwNTg2Nzc4NzE1Mzg1ODY3.GpAIy1.lRbOSCTGyjjfgs7UfNS7B-GzluyCjWVfp-kLVE')
+
+
+
+
+
+
+
+
+# ПОШЁЛ НАХУЙ ХУЕСОС #
