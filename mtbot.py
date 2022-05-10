@@ -31,8 +31,6 @@ db = mc.connect(
     database = "s77034_BadWars"
 )
 
-global emb
-
 @bot.event
 
 async def on_ready():
@@ -69,7 +67,9 @@ async def top(ctx, top_range = 1):
 	for x in cursor:
 		rang += x
 
+	list_length = len(score)
 	try:
+		# Бабл!
 		for iInter in range(len(score)):
 			swapped = False
 			for jInter in range(top_range - 1 - (top_range - 1), len(score) - iInter - 1):
@@ -84,25 +84,19 @@ async def top(ctx, top_range = 1):
 		
 		
 		score.reverse()
-		print(score)
 		nickname.reverse()
-		print(nickname)
 		rang.reverse()
-		print(rang)
 
 		if len(score) <= 10:
 			if top_range != 1:
 				for i in range(top_range - 1):
 					score.remove(score[0])
-					print(score)
 					nickname.remove(nickname[0])
-					print(nickname)
 					rang.remove(rang[0])
-					print(rang)
 
 
 		i = 0
-		emb = discord.Embed(title = 'Топ игроков в Bed War', description = '[С ' + str(top_range) + ' по ' + str(len(score)) + ' места]', colour = discord.Color.gold())
+		emb = discord.Embed(title = 'Топ игроков в Bed War', description = '[С ' + str(top_range) + ' по ' + str(list_length) + ' места]', colour = discord.Color.gold())
 		emb.set_author(name = 'Информация от вашего верного слуги!', icon_url = 'https://cdn.discordapp.com/attachments/571193028190928903/972322466405953536/-----687128.gif')
 		emb.add_field(name = f'🏆 {nickname[0]} [Топ-{top_range}]', value = f'Ранг: {rang[0]}\nСчёт: {score[0]}', inline = False)
 
@@ -110,7 +104,6 @@ async def top(ctx, top_range = 1):
 			emb.add_field(name = f'{top_range + i + 1}-e место', value = f'**{nickname[i+1]}**\n*Счёт: {score[i+1]}*', inline = False)
 
 		await ctx.send(embed = emb)
-		print('Всё сработало:\n')
 	except Exception as e:
 		print(f'Ошибка выполнения запроса пользователя: {e}\nДанные, полученные ботом: \nnickname: {nickname}\nscore: {score}\nrang: {rang}')
 		await ctx.send('Увы, но что-то пошло не так при вашем запросе. Возможно, вы неправильно ввели комманду. Пример правильно введёной команды: ``.top bw 3``, где 3 - место, с которого вы хотите вывести топ игроков.')
@@ -218,15 +211,6 @@ async def tempban(ctx):
 async def voiceban(ctx):
 	await ctx.send()
 
-# with open('token.txt', 'r') as f:
-#     token = f.readline()
-bot.run('OTQwNTg2Nzc4NzE1Mzg1ODY3.GpAIy1.lRbOSCTGyjjfgs7UfNS7B-GzluyCjWVfp-kLVE')
-
-
-
-
-
-
-
-
-# ПОШЁЛ НАХУЙ ХУЕСОС #
+with open('token.txt', 'r') as f:
+    token = f.readline()
+bot.run(token)
